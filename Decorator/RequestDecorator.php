@@ -15,12 +15,12 @@ class MainProcess extends ProcessRequest
 }
 
 /**
- * The main idea of Decorator pattern is that we store object in some property inside class Decorator
- * and then applying custom Decorator logic; instead of just using inheritance
+ * Decorator uses composition and delegation, not just inheritance. Decorator classes hold
+ * and instance of another class of their own type.
  *
  * Class Decorator
  */
-abstract class ProcessDecorator extends ProcessRequest
+abstract class RequestDecorator extends ProcessRequest
 {
     protected $processRequest;
 
@@ -29,22 +29,25 @@ abstract class ProcessDecorator extends ProcessRequest
     }
 }
 
-class LogRequest extends ProcessDecorator
+class LogRequest extends RequestDecorator
 {
     public function process(RequestHelper $request) {
-        $this->processRequest->process();
+        $this->processRequest->process($request);
         print __CLASS__ .' @TODO: Add logging functionality';
     }
 }
 
-class AuthenticateRequest extends ProcessDecorator
+class AuthenticateRequest extends RequestDecorator
 {
     public function process(RequestHelper $request)
     {
-        $this->processRequest->process();
+        $this->processRequest->process($request);
         print __CLASS__ . ' @TODO: Add authentication functionality';
     }
 }
 
+
 $process = new AuthenticateRequest(new LogRequest(new MainProcess()));
 $process->process(new RequestHelper());
+
+
