@@ -1,8 +1,0 @@
-<?php
-
-class Decorator
-{
-    /**
-     * TODO
-     */
-}
