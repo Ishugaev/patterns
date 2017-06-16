@@ -5,6 +5,12 @@ abstract class Payable
     abstract public function toPay(): float;
 }
 
+/**
+ * The Composite pattern is a simple way of aggregating and then managing groups of similar objects so
+ * that an individual object is indistinguishable to a client from a collection of objects.
+ * The Composite pattern defines a single inheritance hierarchy that lays down two distinct sets of
+ * responsibilities.
+ */
 abstract class PayableComposite extends Payable
 {
     protected $payableItemsCollection = [];
@@ -32,7 +38,12 @@ abstract class PayableComposite extends Payable
 
 class Order extends PayableComposite
 {
-
+    public function add(Payable $payableItem)
+    {
+        if ($payableItem instanceof PayableComposite) {
+            parent::add($payableItem);
+        }
+    }
 }
 
 class Invoice extends PayableComposite
@@ -75,4 +86,4 @@ var_dump($invoice->toPay());
 $order = new Order();
 $order->add($invoice);
 
-var_dump($invoice->toPay());
+var_dump($order->toPay());
